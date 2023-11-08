@@ -150,7 +150,7 @@ pub fn ctor(_attribute: TokenStream, function: TokenStream) -> TokenStream {
             #vis #unsafety extern #abi #constness fn #ident() #block
 
             #[used]
-            #[allow(non_upper_case_globals)]
+            #[allow(non_upper_case_globals, non_snake_case)]
             #[cfg_attr(any(target_os = "linux", target_os = "android"), link_section = ".init_array")]
             #[cfg_attr(target_os = "freebsd", link_section = ".init_array")]
             #[cfg_attr(target_os = "netbsd", link_section = ".init_array")]
@@ -162,6 +162,7 @@ pub fn ctor(_attribute: TokenStream, function: TokenStream) -> TokenStream {
             :
             unsafe extern "C" fn() =
             {
+                #[allow(non_snake_case)]
                 #[cfg_attr(any(target_os = "linux", target_os = "android"), link_section = ".text.startup")]
                 unsafe extern "C" fn #ctor_ident() { #ident() };
                 #ctor_ident
